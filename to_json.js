@@ -1,14 +1,12 @@
 const fs = require('fs');
 const readline = require('readline');
 
-// loop over all folders in the current directory
 fs.readdir(__dirname, (err, files) => {
     if (err) {
         console.log(err);
         return;
     }
     files.forEach(file => {
-        // check if file is a folder
         fs.stat(__dirname + '/' + file, (err, stats) => {
             if (err) {
                 console.log(err);
@@ -16,22 +14,13 @@ fs.readdir(__dirname, (err, files) => {
             }
             const main = file;
             if (stats.isDirectory()) {
-                // check if the folder has a folder named "plain"
                 fs.stat(__dirname + '/' + file + '/plain', (err, stats) => {
                     if(err) {
                         console.log(err);
                         return;
                     }
                     if(stats.isDirectory()) {
-                        // structure:
-                        // "filename": [
-                        //   "line1",
-                        //   "line2",
-                        //   ...
-                        //]
                         const fileData = []
-                        // loop over all files in the plain folder,
-                        // and add them to the fileData array
                         fs.readdir(__dirname + '/' + file + '/plain', (err, files) => {
                             if(err) {
                                 console.log(err);
@@ -46,9 +35,9 @@ fs.readdir(__dirname, (err, files) => {
                                 }).on('line', line => {
                                     lines.push(line);
                                 }).on('close', () => {
-                                    // add the fileData to the json
+                                    const name = file.split(".")[0];
                                     fileData.push({
-                                        file,
+                                        name,
                                         lines
                                     })
                                     finished++;
@@ -64,7 +53,7 @@ fs.readdir(__dirname, (err, files) => {
                                             const json = {
                                                 "entries": data.lines
                                             }
-                                            fs.writeFile(dir + data.file, JSON.stringify(json, null, 2), (err) => {
+                                            fs.writeFile(dir + data.file + ".json", JSON.stringify(json, null, 2), (err) => {
                                                 if(err) {
                                                     console.log(err);
                                                     return;
