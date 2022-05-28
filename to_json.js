@@ -7,6 +7,8 @@ fs.readdir(__dirname, (err, files) => {
         return;
     }
     files.forEach(file => {
+        if (file.charAt(0) === '.')
+            return;
         fs.stat(__dirname + '/' + file, (err, stats) => {
             if (err) {
                 console.log(err);
@@ -53,7 +55,7 @@ fs.readdir(__dirname, (err, files) => {
                                             const json = {
                                                 "entries": data.lines
                                             }
-                                            fs.writeFile(dir + data.file + ".json", JSON.stringify(json, null, 2), (err) => {
+                                            fs.writeFile(dir + data.name + ".json", JSON.stringify(json, null, 2), (err) => {
                                                 if(err) {
                                                     console.log(err);
                                                     return;
