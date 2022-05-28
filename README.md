@@ -9,7 +9,7 @@
      - items.txt
      - entities.txt
   | json
-     - blocks.txt
-     - items.txt
-     - entities.txt
+     - blocks.json
+     - items.json
+     - entities.json
 ```
